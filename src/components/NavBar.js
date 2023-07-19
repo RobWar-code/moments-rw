@@ -2,10 +2,11 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import { Navbar, Nav} from 'react-bootstrap'
 import logo from '../assets/logo.png'
+import styles from '../styles/NavBar.module.css'
 
 const NavBar = () => {
   return (
-    <Navbar expand="md" fixed="top"><Container>
+    <Navbar className={styles.NavBar} expand="md" fixed="top"><Container>
     <Navbar.Brand href="#home">
         <img src={logo} alt="logo" height="45" />
     </Navbar.Brand>
