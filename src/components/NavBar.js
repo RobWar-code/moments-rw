@@ -4,12 +4,45 @@ import { Navbar, Nav} from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import styles from '../styles/NavBar.module.css'
-import { useCurrentUser } from '../contexts/CurrentUserContext'
+import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContext'
+import Avatar from './Avatar'
+import axios from 'axios'
 
 const NavBar = () => {
   const currentUser = useCurrentUser();
+  const setCurrentUser = useSetCurrentUser();
 
-  const loggedInIcons = (<>{currentUser?.username}</>);
+  const handleSignOut = async () => {
+    try {
+      await axios.post('/dj-rest-auth/logout');
+      setCurrentUser(null);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  const addPostIcon = (
+    <NavLink to="/posts/create" className={styles.NavLink} activeClassName={styles.Active}>
+        <i className="far fa-plus-square"></i>Add Post
+    </NavLink>
+  )
+
+  const loggedInIcons = (<>
+    <NavLink to="/feed" className={styles.NavLink} activeClassName={styles.Active}>
+        <i className="fas fa-stream"></i>Feed
+    </NavLink>
+    <NavLink to="/liked" className={styles.NavLink} activeClassName={styles.Active}>
+        <i className="fas fa-heart"></i>Liked
+    </NavLink>
+    <NavLink to="/" className={styles.NavLink} onClick={handleSignOut}>
+        <i className="fas fa-sign-out-alt"></i>Sign Out
+    </NavLink>
+    <NavLink to={`/profiles/${currentUser?.profile_id}`} className={styles.NavLink} activeClassName={styles.Active}>
+        <Avatar src={currentUser?.profile_image} text="Profile" height={40}  />
+    </NavLink>
+  </>);
+
   const loggedOutIcons = (<>
     <NavLink to="/signin" className={styles.NavLink} activeClassName={styles.Active}>
         <i className="fas fa-sign-in-alt"></i>Sign-in
@@ -32,6 +65,7 @@ const NavBar = () => {
         <NavLink exact to="/" className={styles.NavLink} activeClassName={styles.Active}>
             <i className="fas fa-home"></i>Home
         </NavLink>
+        {currentUser && addPostIcon}
         {currentUser ? loggedInIcons: loggedOutIcons}
         </Nav>
     </Navbar.Collapse>
