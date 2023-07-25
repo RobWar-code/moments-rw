@@ -14,7 +14,7 @@ import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { axiosReq } from "../../api/axiosDefaults";
-import axios from "axios";
+import { Alert, Image } from "react-bootstrap";
 
 function PostCreateForm() {
 
@@ -56,7 +56,7 @@ function PostCreateForm() {
     formData.append('image', imageInput.current.files[0]);
 
     try {
-      const {data} = axiosReq.post('posts/', formData);
+      const { data } = await axiosReq.post('/posts/', formData);
       history.push(`/posts/${data.id}`)
     }
     catch (err) {
@@ -80,6 +80,9 @@ function PostCreateForm() {
                 onChange={handleChange}
             />
         </Form.Group>
+        {errors?.title?.map((message, idx) => 
+          (<Alert variant="warning" key="idx">{message}</Alert>)
+        )}
 
         <Form.Group controlId="content">
             <Form.Label>Content</Form.Label>
@@ -92,10 +95,13 @@ function PostCreateForm() {
                 onChange={handleChange}
             />
         </Form.Group>
+        {errors?.content?.map((message, idx) => 
+          (<Alert variant="warning" key="idx">{message}</Alert>)
+        )}
     
       <Button
         className={`${btnStyles.Button} ${btnStyles.Blue}`}
-        onClick={() => {}}
+        onClick={() => {history.goBack()}}
       >
         cancel
       </Button>
@@ -116,11 +122,12 @@ function PostCreateForm() {
                 { image ? (
                     <>
                         <figure>
-                            <img className={appStyles.Image} src={image} rounded alt="Graphic"/>
+                            <Image className={appStyles.Image} src={image} rounded />
                         </figure>
                         <div>
                             <Form.Label 
-                                className={`${btnStyles.Button} ${btnStyles.Blue} btn`}
+                                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                                btn="true"
                                 htmlFor="image-upload"
                             >
                                 Change the Image
@@ -145,6 +152,10 @@ function PostCreateForm() {
                 onChange={handleChangeImage}
                 />
             </Form.Group>
+            {errors?.image?.map((message, idx) => 
+              (<Alert variant="warning" key="idx">{message}</Alert>)
+            )}
+
             <div className="d-md-none">{textFields}</div>
           </Container>
         </Col>
