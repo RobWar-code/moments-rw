@@ -127,7 +127,6 @@ function PostCreateForm() {
                         <div>
                             <Form.Label 
                                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
-                                btn="true"
                                 htmlFor="image-upload"
                             >
                                 Change the Image
