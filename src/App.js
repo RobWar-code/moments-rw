@@ -27,14 +27,16 @@ function App() {
           <Route 
             exact 
             path="/feed" 
-            render={() => <PostsPage message="No Results Found - adjust keyword search or follow user" />}
+            render={() => <PostsPage message="No Results Found - adjust keyword search or follow user"
             filter={`owner__followed__owner__profile=${profile_id}&`}
+            />}
           />
           <Route 
             exact 
             path="/liked" 
-            render={() => <PostsPage message="No Results Found - adjust keyword search or like post" />}
+            render={() => <PostsPage message="No Results Found - adjust keyword search or like post" 
             filter={`likes__owner__profile=${profile_id}&ordering=-likes__created_at&`}
+            />}
           />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
