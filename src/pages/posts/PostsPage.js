@@ -19,11 +19,13 @@ function PostsPage({message, filter=""}) {
   // This enables us to track the url page
   // Bearing in mind that we may have got here from /feed or /liked
   const {pathname} = useLocation();
-  
+
+  const [query, setQuery] = useState("");
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const {data} = await axiosReq.get(`/posts/?${filter}`);
+        const {data} = await axiosReq.get(`/posts/?${filter}search=${query}`);
         console.log(data);
         setPosts({results: data});
         setHasLoaded(true);
@@ -34,14 +36,28 @@ function PostsPage({message, filter=""}) {
     }
 
     setHasLoaded(false);
-    fetchPosts();
+
+    // This inserts a delay so that the screen does not flicker during typing
+    const timer = setTimeout(() => {fetchPosts()}, 1000);
+    return () => {clearTimeout(timer)}
+    
     // Note that we execute this when either of filter or pathname changes
-  }, [filter, pathname]);
+  }, [filter, query, pathname]);
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <p>Popular profiles mobile</p>
+        <i className={`fas fa-search ${styles.SearchIcon}`} />
+        <Form className={styles.SearchBar} onSubmit={(event) => {event.preventDefault()}}>
+          <Form.Control 
+            type="text" 
+            className="mr-sm-2" 
+            placeholder="Search Posts" 
+            value={query} 
+            onChange={event => setQuery(event.target.value)}
+          />
+        </Form>
         { hasLoaded ? (
             <>
             { posts.results.length ? (
