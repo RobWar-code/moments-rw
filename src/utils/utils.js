@@ -2,10 +2,7 @@ import { axiosReq } from "../api/axiosDefaults";
 
 export const fetchMoreData = async (resource, setResource) => {
     try {
-
-    }
-    catch (err) {
-        const {data} = await axiosReq.get(request.next)
+        const {data} = await axiosReq.get(resource.next)
         setResource(prevResource => ({
                 ...prevResource,
                 next: data.next,
@@ -15,5 +12,7 @@ export const fetchMoreData = async (resource, setResource) => {
                 }, prevResource.results)
             })
         )
+    }
+    catch (err) {
     }
 }
