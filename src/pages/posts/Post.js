@@ -87,7 +87,6 @@ const Post = (props) => {
                 </Link>
                 <div className="d-flex align-items-center">
                     <span>{updated_at}</span>
-                    {/* add the drop down menu later */}
                     {is_owner && postPage && <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />}
                 </div>
             </Media>
