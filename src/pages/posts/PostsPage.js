@@ -74,11 +74,11 @@ function PostsPage({message, filter=""}) {
                 hasMore={!!posts.next}
                 next={() => fetchMoreData(posts, setPosts)}
               />
-            ) : (
+              ) : (
               <Container>
                 <Asset src={NoResults} message={message} />
               </Container>
-            )
+              )
             }
             </>
         ) : (
