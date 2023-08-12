@@ -19,6 +19,7 @@ import { Button, Image } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "../posts/Post";
 import { fetchMoreData } from "../../utils/utils";
+import NoResults from "../../assets/no-results.png"
 
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -41,10 +42,7 @@ function ProfilePage() {
                 ...prevState,
                 pageProfile: {results: [pageProfile]}
             }));
-            setProfilePosts(prevState => ({
-              ...prevState,
-              profilePosts: {results: [profilePosts]}
-            }));
+            setProfilePosts({results: profilePosts});
             setHasLoaded(true);
         }
         catch (err) {
@@ -107,7 +105,7 @@ function ProfilePage() {
       <hr />
       <p className="text-center">Profile owner's posts</p>
       <hr />
-      { profilePosts?.results.length ? (
+      {profilePosts?.results.length ? (
         <InfiniteScroll children={
           profilePosts.results.map((post) => (
             <Post key={post.id} {...post} setPosts={setProfilePosts} />
@@ -120,8 +118,9 @@ function ProfilePage() {
         />
       ) :
       (
-        <Asset spinner src={NoResults} message={message}/>
-      )}
+        <Asset spinner src={NoResults} message={`No results found ${profile?.owner} hasn't posted yet`}/>
+      )
+      }
     </>
   );
 
