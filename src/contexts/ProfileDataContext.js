@@ -38,9 +38,28 @@ const ProfileDataProvider = ({children}) => {
 
   const handleFollow = async (clickedProfile) => {
     try {
-      const {data} = await axiosRes.post('/followers/', {
+      const {data} = await axiosRes.post('/follows/', {
         followed: clickedProfile.id
       })
+
+      setProfileData(prevState => ({
+        ...prevState,
+        popularProfiles: {
+          ...prevState.popularProfiles,
+          results: prevState.popularProfiles.results.map((profile) => {
+            return profile.id === clickedProfile.id ? {
+              ...profile,
+              followers_count: profile.followers_count + 1,
+              following_id: data.id
+            } :
+            profile.is_owner ? {
+              ...profile,
+              following_count: profile.following_count + 1
+            } :
+            // If this not the owner and not the one followed, return the profile unchanged
+            profile
+          })
+      }}))
     }
     catch (err) {
       console.log(err);
