@@ -16,3 +16,17 @@ export const fetchMoreData = async (resource, setResource) => {
     catch (err) {
     }
 }
+
+export const followHelper = (profile, clickedProfile, followingId) => {
+    return profile.id === clickedProfile.id ? {
+      ...profile,
+      followers_count: profile.followers_count + 1,
+      following_id: followingId
+    } :
+    profile.is_owner ? {
+      ...profile,
+      following_count: profile.following_count + 1
+    } :
+    // If this not the owner and not the one followed, return the profile unchanged
+    profile
+}
