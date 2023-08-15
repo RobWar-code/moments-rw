@@ -30,3 +30,17 @@ export const followHelper = (profile, clickedProfile, followingId) => {
     // If this not the owner and not the one followed, return the profile unchanged
     profile
 }
+
+export const unfollowHelper = (profile, clickedProfile) => {
+    return profile.id === clickedProfile.id ? {
+      ...profile,
+      followers_count: profile.followers_count - 1,
+      following_id: null
+    } :
+    profile.is_owner ? {
+      ...profile,
+      following_count: profile.following_count - 1
+    } :
+    // If this not the owner and not the one followed, return the profile unchanged
+    profile
+}
