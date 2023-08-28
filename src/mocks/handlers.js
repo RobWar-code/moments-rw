@@ -1,3 +1,5 @@
+import {rest} from 'msw'
+
 // Use the baseURL from api/axiosDefaults.js
 const baseURL = 'https://dj-rest-profiles-7506ba4404dc.herokuapp.com/'
 
